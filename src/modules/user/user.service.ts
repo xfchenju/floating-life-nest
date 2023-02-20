@@ -15,7 +15,7 @@ export class UserService {
    * @param user
    * @returns
    */
-  async create(user: Partial<UserEntity>): Promise<UserEntity> {
+  async create(user: Partial<UserEntity>): Promise<number> {
     console.log('service user create', user);
     const { username } = user;
     if (!username) {
@@ -25,7 +25,8 @@ export class UserService {
     if (doc) {
       throw new HttpException('用户已存在', 500);
     }
-    return await this.userRepository.save(user);
+    const { id } = await this.userRepository.save(user);
+    return id;
   }
 
   /**
@@ -62,7 +63,14 @@ export class UserService {
     return existUser;
   }
 
-  getUser() {
-    return '用户1';
+  async removeById(id: number) {
+    if (!id) {
+      throw new HttpException('缺少用户id', 400);
+    }
+    const existUser = await this.userRepository.findOne({ where: { id } });
+    if (!existUser) {
+      throw new HttpException(`id为${id}的用户不存在`, 500);
+    }
+    return this.userRepository.remove(existUser);
   }
 }

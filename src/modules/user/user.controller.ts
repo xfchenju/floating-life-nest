@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Query, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Api } from 'src/utils/api';
 
@@ -10,16 +10,11 @@ export class UserController {
     console.log('error', error);
   });
 
-  @Get()
-  getUser() {
-    return this.userService.getUser();
-  }
-
   @Post('/create')
   async create(@Body() user) {
     try {
-      await this.userService.create(user);
-      return this.API.ok('新增成功！', 'create');
+      const id = await this.userService.create(user);
+      return this.API.ok(id, 'create');
     } catch (error) {
       return this.API.err('新增失败！', error.message);
     }
@@ -44,13 +39,25 @@ export class UserController {
   }
 
   @Get('/getUserById')
-  async getUserById(@Param('id') id) {
-    console.log('getUserById params', id);
+  async getUserById(@Query() query) {
+    console.log('getUserById params', query);
     try {
-      const data = await this.userService.getUserById(id);
-      return this.API.ok(data, 'getUserList');
+      const data = await this.userService.getUserById(query.id);
+      return this.API.ok(data, 'getUserById');
     } catch (error) {
       console.log('getUserById error', error);
+      return this.API.err('失败', error.message);
+    }
+  }
+
+  @Post('/delete')
+  async removeById(@Query() query) {
+    console.log('removeById params', query);
+    try {
+      const data = await this.userService.removeById(query.id);
+      return this.API.ok(data, 'removeById');
+    } catch (error) {
+      console.log('removeById error', error);
       return this.API.err('失败', error.message);
     }
   }
