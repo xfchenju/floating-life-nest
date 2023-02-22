@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Query, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Api } from 'src/utils/api';
+import { ApiOperation } from '@nestjs/swagger';
+import { CreateUserDto } from './user.dto';
 
 @Controller('user')
 export class UserController {
@@ -10,8 +12,9 @@ export class UserController {
     console.log('error', error);
   });
 
+  @ApiOperation({ summary: '创建用户' })
   @Post('/create')
-  async create(@Body() user) {
+  async create(@Body() user: CreateUserDto) {
     try {
       const id = await this.userService.create(user);
       return this.API.ok(id, 'create');
