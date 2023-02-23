@@ -41,7 +41,7 @@ export class UserService {
       throw new HttpException(`id为${id}的用户不存在`, 500);
     }
     const updateUser = this.userRepository.merge(existUser, user);
-    return this.userRepository.save(updateUser);
+    return await this.userRepository.save(updateUser);
   }
 
   async findAll() {
