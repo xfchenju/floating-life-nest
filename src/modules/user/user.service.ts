@@ -18,9 +18,6 @@ export class UserService {
   async create(user: Partial<UserEntity>): Promise<number> {
     console.log('service user create', user);
     const { username } = user;
-    if (!username) {
-      throw new HttpException('缺少用户名称', 400);
-    }
     const doc = await this.userRepository.findOne({ where: { username } });
     if (doc) {
       throw new HttpException('用户已存在', 500);
