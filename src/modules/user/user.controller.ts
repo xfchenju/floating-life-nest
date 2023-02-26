@@ -1,8 +1,9 @@
 import { Body, Controller, Get, Query, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Api } from 'src/utils/api';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { CreateUserDto } from './user.dto';
+import { UserEntity } from './user.entity';
 
 @Controller('user')
 export class UserController {
@@ -11,6 +12,14 @@ export class UserController {
   private readonly API = new Api((error: string) => {
     console.log('error', error);
   });
+
+  @ApiOperation({ summary: '注册用户' })
+  @ApiOkResponse({ status: 200, type: [UserEntity] })
+  @Post('/register')
+  async register(@Body() user: CreateUserDto) {
+    console.log('register', user);
+    return this.userService.register(user);
+  }
 
   @ApiOperation({ summary: '创建用户' })
   @Post('/create')

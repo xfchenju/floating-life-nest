@@ -1,7 +1,8 @@
 import { UserEntity } from './user.entity';
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateUserDto } from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -9,6 +10,22 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
+
+  async register(createUser: CreateUserDto) {
+    console.log('register', createUser);
+    const { username } = createUser;
+    const existUser = await this.userRepository.findOne({
+      where: { username },
+    });
+    console.log('register existUser', existUser);
+    if (existUser) {
+      throw new HttpException('用户名已存在', HttpStatus.BAD_REQUEST);
+    }
+    const newUser = await this.userRepository.create(createUser);
+    await this.userRepository.save(newUser);
+    console.log('register newUser', newUser);
+    return await this.userRepository.findOne({ where: { username } });
+  }
 
   /**
    * 创建用户
