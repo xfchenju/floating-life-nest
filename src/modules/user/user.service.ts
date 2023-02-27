@@ -2,6 +2,7 @@ import { UserEntity } from './user.entity';
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { GetUserListDto } from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -44,7 +45,9 @@ export class UserService {
     return await this.userRepository.save(updateUser);
   }
 
-  async findAll() {
+  async getUserList(params: GetUserListDto) {
+    const { username, nickname, email } = params;
+
     return await this.userRepository.find();
   }
 
