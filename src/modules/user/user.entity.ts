@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 
 @Entity('user')
 export class UserEntity {
@@ -12,7 +12,7 @@ export class UserEntity {
   @Column({ length: 100 })
   nickname: string; //昵称
 
-  @Column()
+  @Column({ select: false })
   password: string; // 密码
 
   @Column()
@@ -32,6 +32,6 @@ export class UserEntity {
 
   @BeforeInsert()
   async encryptPwd() {
-    this.password = await bcrypt.hashSync(this.password);
+    this.password = await bcrypt.hashSync(this.password, 10);
   }
 }
