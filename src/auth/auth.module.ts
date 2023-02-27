@@ -7,6 +7,7 @@ import { UserEntity } from 'src/modules/user/user.entity';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { JwtStorage } from './jwt.strategy';
 
 const jwtModule = JwtModule.registerAsync({
   inject: [ConfigService],
@@ -21,6 +22,6 @@ const jwtModule = JwtModule.registerAsync({
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity]), PassportModule, jwtModule],
   controllers: [AuthController],
-  providers: [AuthService, LocalStorage],
+  providers: [AuthService, LocalStorage, JwtStorage],
 })
 export class AuthModule {}

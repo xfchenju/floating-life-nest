@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Query, Post } from '@nestjs/common';
+import { Body, Controller, Get, Query, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Api } from 'src/utils/api';
 import { CreateUserDto, UpdateUserDto, GetUserListDto } from './user.dto';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { UserEntity } from './user.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
@@ -36,6 +37,8 @@ export class UserController {
   }
 
   @ApiOkResponse({ type: CreateUserDto })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @Get('/getUserList')
   async getUserList(@Query() query: GetUserListDto) {
     return await this.userService.getUserList(query);
