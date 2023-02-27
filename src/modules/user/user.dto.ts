@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { PageOptionsDto } from 'src/dto/page.dto';
 
 export class CreateUserDto {
   @ApiProperty({ description: '用户名' })
@@ -30,7 +31,7 @@ export class UpdateUserDto extends CreateUserDto {
   readonly id: number;
 }
 
-export class GetUserListDto {
+export class GetUserListDto extends PageOptionsDto {
   @ApiProperty({ description: '用户名' })
   readonly username?: string;
 
