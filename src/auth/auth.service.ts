@@ -3,10 +3,13 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from 'src/modules/user/user.entity';
+// import { RedisCacheService } from 'src/db/redis-cache.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService, // private redisCacheService: RedisCacheService,
+  ) {}
 
   createToken(user: Partial<UserEntity>) {
     return this.jwtService.sign(user);
@@ -19,6 +22,11 @@ export class AuthService {
       role: user.role,
     });
 
+    // this.redisCacheService.cacheSet(
+    //   `${user.id}&${user.username}&${user.role}`,
+    //   token,
+    //   1800,
+    // );
     return { token };
   }
 

@@ -1,5 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  OneToMany,
+} from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { Todo } from '../todo/entities/todo.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -29,6 +36,9 @@ export class UserEntity {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   update_time: Date;
+
+  @OneToMany(() => Todo, (todo) => todo.user)
+  todo: Todo[];
 
   @BeforeInsert()
   async encryptPwd() {
