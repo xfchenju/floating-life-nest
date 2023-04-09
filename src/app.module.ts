@@ -12,6 +12,17 @@ import {
   ConfigurationKeyPaths,
   getConfiguration,
 } from './config/configuration';
+import SysUser from './entities/system/sys-user.entity';
+import { SysRole } from './entities/system/sys-role.entity';
+import { SysUserRole } from './entities/system/sys-user-role.entity';
+import { SysMenu } from './entities/system/sys-menu.entity';
+import { SysRoleMenu } from './entities/system/sys-role-menu.entity';
+import { SysOrganization } from './entities/system/sys-organization.entity';
+import { SysRoleOrganization } from './entities/system/sys-role-organization.entity';
+import { UserModule } from './modules/system/user/user.module';
+import { RoleModule } from './modules/system/role/role.module';
+import { OrganizationModule } from './modules/system/organization/organization.module';
+import { MenuModule } from './modules/system/menu/menu.module';
 
 @Module({
   imports: [
@@ -27,7 +38,18 @@ import {
         configService: ConfigService<ConfigurationKeyPaths>,
       ) => ({
         type: 'mysql', // 数据库类型
-        entities: [UserEntity, Todo], // 数据表实体
+        // entities: [__dirname + '/../**/entities/*.entity.{ts,js}'],
+        entities: [
+          UserEntity,
+          Todo,
+          SysUser,
+          SysRole,
+          SysUserRole,
+          SysMenu,
+          SysRoleMenu,
+          SysOrganization,
+          SysRoleOrganization,
+        ], // 数据表实体
         host: configService.get('database.host'), // 主机，默认为localhost
         port: configService.get('database.port'), // 端口号
         username: configService.get('database.username'), // 用户名
@@ -41,6 +63,9 @@ import {
     UserModule,
     AuthModule,
     TodoModule,
+    RoleModule,
+    OrganizationModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [AppService],
