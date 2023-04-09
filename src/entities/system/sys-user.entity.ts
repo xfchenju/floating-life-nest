@@ -3,7 +3,7 @@ import { BaseEntity } from '../base.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('sys_user')
-export default class SysUser extends BaseEntity {
+export abstract class SysUser extends BaseEntity {
   @PrimaryGeneratedColumn()
   @ApiProperty()
   id: number;

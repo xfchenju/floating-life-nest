@@ -12,18 +12,14 @@ import {
   ConfigurationKeyPaths,
   getConfiguration,
 } from './config/configuration';
-import SysUser from './entities/system/sys-user.entity';
+import { SysUser } from './entities/system/sys-user.entity';
 import { SysRole } from './entities/system/sys-role.entity';
 import { SysUserRole } from './entities/system/sys-user-role.entity';
 import { SysMenu } from './entities/system/sys-menu.entity';
 import { SysRoleMenu } from './entities/system/sys-role-menu.entity';
 import { SysOrganization } from './entities/system/sys-organization.entity';
 import { SysRoleOrganization } from './entities/system/sys-role-organization.entity';
-import { UserModule } from './modules/system/user/user.module';
-import { RoleModule } from './modules/system/role/role.module';
-import { OrganizationModule } from './modules/system/organization/organization.module';
-import { MenuModule } from './modules/system/menu/menu.module';
-
+import { SystemModule } from './modules/system/system.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -63,9 +59,7 @@ import { MenuModule } from './modules/system/menu/menu.module';
     UserModule,
     AuthModule,
     TodoModule,
-    RoleModule,
-    OrganizationModule,
-    MenuModule,
+    SystemModule,
   ],
   controllers: [AppController],
   providers: [AppService],
