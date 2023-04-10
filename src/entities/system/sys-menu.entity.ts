@@ -42,11 +42,11 @@ export abstract class SysMenu extends BaseEntity {
 
   @Column({ nullable: true, default: false })
   @ApiProperty()
-  keepalive: string;
+  keepalive: boolean;
 
   @Column({ name: 'is_show', type: 'boolean', nullable: true, default: true })
   @ApiProperty({ description: '是否在菜单显示' })
-  isShow: string;
+  isShow: boolean;
 
   @Column({ name: 'is_ext', type: 'boolean', nullable: true, default: false })
   @ApiProperty({ description: '是否为外链' })
