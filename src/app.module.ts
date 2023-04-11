@@ -20,6 +20,10 @@ import { SysRoleMenu } from './entities/system/sys-role-menu.entity';
 import { SysOrganization } from './entities/system/sys-organization.entity';
 import { SysRoleOrganization } from './entities/system/sys-role-organization.entity';
 import { SystemModule } from './modules/system/system.module';
+import { WinstonModule } from 'nest-winston';
+import * as winston from 'winston';
+import 'winston-daily-rotate-file';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -60,6 +64,25 @@ import { SystemModule } from './modules/system/system.module';
     AuthModule,
     TodoModule,
     SystemModule,
+    // 日志模块
+    WinstonModule.forRoot({
+      transports: [
+        new winston.transports.DailyRotateFile({
+          dirname: 'logs',
+          filename: '%DATE%.log',
+          datePattern: 'YYYY-MM-DD',
+          zippedArchive: true,
+          maxSize: '20m',
+          maxFiles: '14d',
+          format: winston.format.combine(
+            winston.format.timestamp({
+              format: 'YYYY-MM-DD HH:mm:ss',
+            }),
+            winston.format.json(),
+          ),
+        }),
+      ],
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

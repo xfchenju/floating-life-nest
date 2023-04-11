@@ -3,6 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetUserListDto, CreateUserDto } from './user.dto';
+import { UnifyException } from 'src/common/exceptions/unify.exception';
 
 @Injectable()
 export class UserService {
@@ -70,7 +71,7 @@ export class UserService {
   async getUserById(id: number) {
     console.log('getUserById', id);
     if (!id) {
-      throw new HttpException('缺少用户id', 400);
+      throw new UnifyException(100001);
     }
     const existUser = await this.userRepository.findOne({ where: { id } });
     if (!existUser) {

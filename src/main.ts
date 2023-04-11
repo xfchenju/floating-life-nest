@@ -8,6 +8,7 @@ import {
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './core/filter/http-exception/http-exception.filter';
 import { TransformInterceptor } from './core/interceptor/transform/transform.interceptor';
+import UnifyExceptionFilter from './common/filters/unify-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -30,9 +31,8 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter(), new UnifyExceptionFilter());
   app.useGlobalInterceptors(new TransformInterceptor());
-
   await app.listen(3099);
   console.log('启动成功------端口：3099');
 }
